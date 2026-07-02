@@ -1,4 +1,6 @@
-import { client, StoryblokComponent } from "./lib/storyblok";
+import { StoryblokPreview } from "@storyblok/react/next/rsc";
+import { renderContent } from "./lib/actions";
+import { client, enableLivePreview } from "./lib/storyblok";
 
 export default async function Home() {
   const { data } = await client.stories.get("home", {
@@ -9,10 +11,18 @@ export default async function Home() {
   if (!story) {
     return <main>Story not found</main>;
   }
+  const content = await renderContent(story);
+
+  if (!enableLivePreview) {
+    return content;
+  }
   return (
-    <main>
-      <h1>Hello, World!</h1>
-      <StoryblokComponent blok={story.content} />
-    </main>
+    <>
+      <h1>Storyblok Live Preview!</h1>
+      <StoryblokPreview
+        renderContent={renderContent}
+        initialContent={content}
+      />
+    </>
   );
 }

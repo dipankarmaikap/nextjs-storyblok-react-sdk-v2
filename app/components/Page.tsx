@@ -1,4 +1,4 @@
-import { storyblokEditable, type SbBlokData } from "@storyblok/react/v2";
+import { storyblokEditable, type SbBlokData } from "@storyblok/react/next";
 import { StoryblokBlocks } from "../lib/storyblok";
 
 interface PageProps {

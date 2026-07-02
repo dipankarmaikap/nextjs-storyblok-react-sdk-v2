@@ -1,6 +1,6 @@
 import { cache } from "react";
 import { unstable_cache } from "next/cache";
-import { storyblokEditable, type SbBlokData } from "@storyblok/react/v2";
+import { storyblokEditable, type SbBlokData } from "@storyblok/react/next";
 
 interface WeatherWidgetProps {
   blok: SbBlokData & { title: string; location: string };

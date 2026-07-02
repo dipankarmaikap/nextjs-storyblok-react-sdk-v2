@@ -9,7 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@storyblok/react": "https://pkg.pr.new/@storyblok/react@7eb24c5",
+    "@storyblok/react": "https://pkg.pr.new/@storyblok/react@9ba6f58",
     "next": "16.2.4",
     "react": "19.2.4",
     "react-dom": "19.2.4"
