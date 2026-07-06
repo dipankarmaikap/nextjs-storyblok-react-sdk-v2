@@ -15,7 +15,7 @@ interface WeatherData {
 
 // In-memory cache keyed by location (only used in draft mode)
 const memoryCache = new Map<string, WeatherData>();
-const isDraftMode = process.env.NODE_ENV === "development" || process.env.STORYBLOK_DRAFT_MODE === "true";
+const isDraftMode = true
 
 /**
  * Fetch weather data (with simulated delay)
