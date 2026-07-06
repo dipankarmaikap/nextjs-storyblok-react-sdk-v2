@@ -9,6 +9,7 @@ import Teaser from "../components/Teaser";
 import Feature from "../components/Feature";
 import FallbackBlock from "../components/FallbackBlock";
 import { WeatherWidget } from "../components/WeatherWidget";
+import { WeatherWidgetSkeleton } from "../components/WeatherWidgetSkeleton";
 
 
 const storyblokToken = process.env.NEXT_PUBLIC_STORYBLOK_DELIVERY_API_TOKEN!;
@@ -25,7 +26,11 @@ export const { StoryblokComponent, StoryblokBlocks } = createRegistry({
     grid: Grid,
     teaser: Teaser,
     feature: Feature,
-    'weather_widget': WeatherWidget,
+    'weather_widget': {
+      component: WeatherWidget,
+      fallback: <WeatherWidgetSkeleton />,
+      suspense: true
+    },
   },
   fallback: FallbackBlock,
 });
