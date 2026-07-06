@@ -1,10 +1,13 @@
 import { StoryblokPreview } from "@storyblok/react/next/rsc";
+import { draftMode } from "next/headers";
 import { renderContent } from "./lib/actions";
-import { client, enableLivePreview } from "./lib/storyblok";
+import { client } from "./lib/storyblok";
 
 export default async function Home() {
+  const { isEnabled: isDraftMode } = await draftMode();
+
   const { data } = await client.stories.get("home", {
-    query: { version: "draft" },
+    query: { version: isDraftMode ? "draft" : "published" },
   });
   const story = data?.story;
 
@@ -13,12 +16,13 @@ export default async function Home() {
   }
   const content = await renderContent(story);
 
-  if (!enableLivePreview) {
+  // Only show live preview when in draft mode
+  if (!isDraftMode) {
     return content;
   }
+
   return (
     <>
-      <h1>Storyblok Live Preview!</h1>
       <StoryblokPreview
         renderContent={renderContent}
         initialContent={content}
