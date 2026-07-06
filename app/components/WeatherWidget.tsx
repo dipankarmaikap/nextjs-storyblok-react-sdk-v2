@@ -6,26 +6,60 @@ interface WeatherWidgetProps {
   blok: SbBlokData & { title: string; location: string };
 }
 
+interface WeatherData {
+  temperature: number;
+  windSpeed: number;
+  fetchedAt: string;
+  fetchId: string;
+}
+
+// In-memory cache keyed by location (only used in draft mode)
+const memoryCache = new Map<string, WeatherData>();
+const isDraftMode = process.env.NODE_ENV === "development" || process.env.STORYBLOK_DRAFT_MODE === "true";
+
 /**
- * Fetch weather - wrapped with Next.js unstable_cache for cross-request caching.
- * 
- * Cache behavior:
- * - Same location within 60s → Returns cached data (fast)
- * - Different location → Fetches new data (slow, 2s delay)
- * - After 60s → Revalidates
+ * Fetch weather data (with simulated delay)
+ */
+async function fetchWeatherData(location: string): Promise<WeatherData> {
+  const fetchId = Math.random().toString(36).slice(2, 8);
+  console.log(`[FETCH] ${fetchId} for ${location}`);
+  await new Promise((resolve) => setTimeout(resolve, 10000));
+  
+  return {
+    temperature: Math.floor(Math.random() * 15) + 15,
+    windSpeed: Math.floor(Math.random() * 20) + 5,
+    fetchedAt: new Date().toISOString(),
+    fetchId,
+  };
+}
+
+/**
+ * Fetch weather - uses memory cache in draft mode, unstable_cache in production
+ */
+async function fetchWeather(location: string): Promise<WeatherData> {
+  // In draft mode, use memory cache for fast previews
+  if (isDraftMode) {
+    const cached = memoryCache.get(location);
+    
+    if (cached) {
+      console.log(`[CACHE HIT] Returning cached data for ${location}`);
+      return cached;
+    }
+
+    const data = await fetchWeatherData(location);
+    memoryCache.set(location, data);
+    return data;
+  }
+
+  // Production: just fetch (unstable_cache handles caching)
+  return fetchWeatherData(location);
+}
+
+/**
+ * Wrapped with Next.js unstable_cache for cross-request caching (production)
  */
 const getWeatherCached = unstable_cache(
-  async (location: string) => {
-    const fetchId = Math.random().toString(36).slice(2, 8);
-    console.log(`[FETCH] ${fetchId} for ${location}`);
-    await new Promise((resolve) => setTimeout(resolve, 10000));
-    return {
-      temperature: Math.floor(Math.random() * 15) + 15,
-      windSpeed: Math.floor(Math.random() * 20) + 5,
-      fetchedAt: new Date().toISOString(),
-      fetchId,
-    };
-  },
+  fetchWeather,
   ["weather"],
   {
     revalidate: 60,
