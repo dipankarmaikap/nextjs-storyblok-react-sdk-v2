@@ -6,6 +6,8 @@ import { client } from "./lib/storyblok";
 export default async function Home() {
   const { isEnabled: isDraftMode } = await draftMode();
 
+  console.log("Draft mode enabled:", isDraftMode);
+
   const { data } = await client.stories.get("home", {
     query: { version: isDraftMode ? "draft" : "published" },
   });
@@ -23,6 +25,9 @@ export default async function Home() {
 
   return (
     <>
+      <div style={{ background: "yellow", padding: "10px" }}>
+        DRAFT MODE IS ON
+      </div>
       <StoryblokPreview
         renderContent={renderContent}
         initialContent={content}

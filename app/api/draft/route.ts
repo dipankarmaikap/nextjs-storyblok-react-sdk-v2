@@ -19,5 +19,7 @@ export async function GET(request: NextRequest) {
   draft.enable();
 
   // Redirect to the path being previewed
-  redirect(slug.startsWith("/") ? slug : `/${slug}`);
+  // "home" is the root page in Storyblok, so redirect to "/"
+  const path = slug === "home" ? "/" : (slug.startsWith("/") ? slug : `/${slug}`);
+  redirect(path);
 }
