@@ -1,5 +1,4 @@
 import { draftMode } from "next/headers";
-import { redirect } from "next/navigation";
 import { NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -7,8 +6,6 @@ export async function GET(request: NextRequest) {
 
   // Validate the secret token from Storyblok
   const secret = searchParams.get("secret");
-  const slug = searchParams.get("slug") || "/";
-
   // Check the secret matches your Storyblok token
   if (secret !== process.env.NEXT_PUBLIC_STORYBLOK_DELIVERY_API_TOKEN) {
     return new Response("Invalid token", { status: 401 });
@@ -18,8 +15,5 @@ export async function GET(request: NextRequest) {
   const draft = await draftMode();
   draft.enable();
 
-  // Redirect to the path being previewed
-  // "home" is the root page in Storyblok, so redirect to "/"
-  const path = slug === "home" ? "/" : (slug.startsWith("/") ? slug : `/${slug}`);
-  redirect(path);
+  return new Response("Draft mode enabled", { status: 200 });
 }
