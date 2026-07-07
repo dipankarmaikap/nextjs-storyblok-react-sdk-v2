@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@storyblok/live-preview':
+        specifier: https://pkg.pr.new/storyblok/monoblok/@storyblok/live-preview@7855903
+        version: https://pkg.pr.new/storyblok/monoblok/@storyblok/live-preview@7855903
       '@storyblok/react':
         specifier: https://pkg.pr.new/@storyblok/react@7855903
         version: https://pkg.pr.new/@storyblok/react@7855903(@floating-ui/dom@1.7.6)(next@16.2.4(@babel/core@7.29.7)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -20,6 +23,9 @@ importers:
       react-dom:
         specifier: 19.2.4
         version: 19.2.4(react@19.2.4)
+      server-only:
+        specifier: ^0.0.1
+        version: 0.0.1
     devDependencies:
       '@tailwindcss/postcss':
         specifier: ^4
@@ -451,15 +457,15 @@ packages:
     resolution: {integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==}
 
   '@storyblok/api-client@https://pkg.pr.new/storyblok/monoblok/@storyblok/api-client@7855903':
-    resolution: {integrity: sha512-TtjGQCkmG1NXHsApdHmx1Jjg1H0kzp4mN+cyaD1OGL9wLesvi7gPA+NhInrh2vE1UE7bAKx0XyyGDQDUTlQ79g==, tarball: https://pkg.pr.new/storyblok/monoblok/@storyblok/api-client@7855903}
+    resolution: {tarball: https://pkg.pr.new/storyblok/monoblok/@storyblok/api-client@7855903}
     version: 0.3.1
 
   '@storyblok/js@https://pkg.pr.new/storyblok/monoblok/@storyblok/js@7855903':
-    resolution: {integrity: sha512-Y0BiNqySrMIXhG9iZmDnkPfHwtyXgC+ZL1IiyVmNSJerqqOJOhTiGYVGEyngz08cWQKu5rp8My+fEPXhCOj2lg==, tarball: https://pkg.pr.new/storyblok/monoblok/@storyblok/js@7855903}
+    resolution: {tarball: https://pkg.pr.new/storyblok/monoblok/@storyblok/js@7855903}
     version: 6.0.1
 
   '@storyblok/live-preview@https://pkg.pr.new/storyblok/monoblok/@storyblok/live-preview@7855903':
-    resolution: {integrity: sha512-+zG7xSKvWKfN3RheSYh68oda/qOZjG2zhFZQrYYO523Ie+UOaDaVi8occMoVLDV9c/ZVuGaADXxT02H8Afl9kA==, tarball: https://pkg.pr.new/storyblok/monoblok/@storyblok/live-preview@7855903}
+    resolution: {tarball: https://pkg.pr.new/storyblok/monoblok/@storyblok/live-preview@7855903}
     version: 0.2.0
 
   '@storyblok/preview-bridge@2.1.6':
@@ -477,11 +483,11 @@ packages:
         optional: true
 
   '@storyblok/region-helper@https://pkg.pr.new/storyblok/monoblok/@storyblok/region-helper@7855903':
-    resolution: {integrity: sha512-fJeqCg1OVIf58KMJvIylfVtD7jsCGogT21q33rvKBFuEL9jB+giSYi6wFvKeYFAVka2x61KuTpAYo124NwsfAA==, tarball: https://pkg.pr.new/storyblok/monoblok/@storyblok/region-helper@7855903}
+    resolution: {tarball: https://pkg.pr.new/storyblok/monoblok/@storyblok/region-helper@7855903}
     version: 1.4.1
 
   '@storyblok/richtext@https://pkg.pr.new/storyblok/monoblok/@storyblok/richtext@7855903':
-    resolution: {integrity: sha512-Mic2ZPACxbfWyDl+qssPWLBZVgllXd41zZP1XsYVXxQRt81ub7IPWu2hszPbstcHcZh0Mo93C92eGlV6XzHUNA==, tarball: https://pkg.pr.new/storyblok/monoblok/@storyblok/richtext@7855903}
+    resolution: {tarball: https://pkg.pr.new/storyblok/monoblok/@storyblok/richtext@7855903}
     version: 5.0.1
 
   '@swc/helpers@0.5.15':
@@ -2057,6 +2063,9 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
+  server-only@0.0.1:
+    resolution: {integrity: sha512-qepMx2JxAa5jjfzxG79yPPq+8BuFToHd1hm7kI+Z4zAq1ftQiP7HcxMhDDItrbtwVeLg/cY2JnKnrcFkmiswNA==}
+
   set-function-length@1.2.2:
     resolution: {integrity: sha512-pgRc4hJ4/sNjWCSS9AmnS40x3bNMDTknHgL5UaMBTMyJnU90EgWh1Rz+MC9eFu4BuN/UwZjKQuY/1v3rM7HMfg==}
     engines: {node: '>= 0.4'}
@@ -2109,7 +2118,7 @@ packages:
     engines: {node: '>= 0.4'}
 
   storyblok-js-client@https://pkg.pr.new/storyblok/monoblok/storyblok-js-client@7855903:
-    resolution: {integrity: sha512-qoEYcF3PBtQLkuXitv6mOojM6x0MQP0pxsw14CcQzJpQfrv+tCD93H4RVdRzJ+AqdP/14CT1xcJtj/xmQi+A4w==, tarball: https://pkg.pr.new/storyblok/monoblok/storyblok-js-client@7855903}
+    resolution: {tarball: https://pkg.pr.new/storyblok/monoblok/storyblok-js-client@7855903}
     version: 7.6.1
 
   string.prototype.includes@2.0.1:
@@ -4472,6 +4481,8 @@ snapshots:
   semver@6.3.1: {}
 
   semver@7.8.5: {}
+
+  server-only@0.0.1: {}
 
   set-function-length@1.2.2:
     dependencies:

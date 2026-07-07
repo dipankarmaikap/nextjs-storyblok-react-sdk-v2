@@ -9,10 +9,12 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@storyblok/live-preview": "https://pkg.pr.new/storyblok/monoblok/@storyblok/live-preview@7855903",
     "@storyblok/react": "https://pkg.pr.new/@storyblok/react@7855903",
     "next": "16.2.4",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "server-only": "^0.0.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

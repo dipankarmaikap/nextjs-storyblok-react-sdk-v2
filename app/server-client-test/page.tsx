@@ -1,11 +1,11 @@
 import { StoryblokPreview } from "@storyblok/react/next/rsc";
 import { draftMode } from "next/headers";
-import { renderContent } from "./lib/actions";
-import { client } from "./lib/storyblok";
+import { renderContent } from "../lib/actions";
+import { client } from "../lib/storyblok";
 
 export default async function Home() {
   const { isEnabled: isDraftMode } = await draftMode();
-  const { data } = await client.stories.get("home", {
+  const { data } = await client.stories.get("server-client-test", {
     query: { version: 'draft' },
   });
   const story = data?.story;
