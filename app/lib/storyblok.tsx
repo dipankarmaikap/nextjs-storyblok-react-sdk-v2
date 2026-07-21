@@ -1,7 +1,4 @@
-import {
-  createRegistry,
-  createApiClient,
-} from "@storyblok/react/next";
+import { createRegistry, createApiClient } from "@storyblok/react/next";
 
 import Page from "../components/Page";
 import Grid from "../components/Grid";
@@ -13,15 +10,16 @@ import { WeatherWidgetSkeleton } from "../components/WeatherWidgetSkeleton";
 import { ProductList } from "../components/ProductList";
 import { Accordion } from "../components/Accordion";
 
-
 const storyblokToken = process.env.NEXT_PUBLIC_STORYBLOK_DELIVERY_API_TOKEN!;
 const storyblokRegion = process.env.NEXT_PUBLIC_STORYBLOK_REGION!;
-export const enableLivePreview = process.env.NEXT_PUBLIC_STORYBLOK_ENABLE_LIVEPREVIEW === "true";
+export const enableLivePreview =
+  process.env.NEXT_PUBLIC_STORYBLOK_ENABLE_LIVEPREVIEW === "true";
 
 export const client = createApiClient({
   accessToken: storyblokToken,
   region: storyblokRegion as "us" | "eu",
 });
+
 export const { StoryblokComponent, StoryblokBlocks } = createRegistry({
   components: {
     page: Page,
@@ -30,10 +28,10 @@ export const { StoryblokComponent, StoryblokBlocks } = createRegistry({
     feature: Feature,
     product_list: ProductList,
     accordion: Accordion,
-    'weather_widget': {
+    weather_widget: {
       component: WeatherWidget,
       fallback: <WeatherWidgetSkeleton />,
-      suspense: true
+      suspense: true,
     },
   },
   fallback: FallbackBlock,

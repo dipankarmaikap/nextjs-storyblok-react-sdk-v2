@@ -1,7 +1,14 @@
-import { storyblokEditable, type SbBlokData } from "@storyblok/react";
-
+import {
+  SbBlokData,
+  storyblokEditable,
+  StoryblokRichText,
+} from "@storyblok/react/next";
+import { SbRichTextNode } from "@storyblok/richtext";
 interface FeatureProps {
-  blok: SbBlokData & { name: string; description: string };
+  blok: SbBlokData & {
+    name?: string;
+    description?: SbRichTextNode;
+  };
 }
 
 export default function Feature({ blok }: FeatureProps) {
@@ -11,7 +18,9 @@ export default function Feature({ blok }: FeatureProps) {
       {...storyblokEditable(blok)}
     >
       <h2 className="text-xl font-semibold text-zinc-100">{blok.name}</h2>
-      <p className="mt-2 text-zinc-400">{blok.description}</p>
+      {blok.description ? (
+        <StoryblokRichText document={blok.description} />
+      ) : null}
     </div>
   );
 }

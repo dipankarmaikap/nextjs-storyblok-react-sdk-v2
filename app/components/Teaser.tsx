@@ -1,6 +1,6 @@
 "use client";
 
-import { storyblokEditable, type SbBlokData } from "@storyblok/react";
+import { storyblokEditable, type SbBlokData } from "@storyblok/react/next";
 
 interface TeaserProps {
   blok: SbBlokData & { headline: string };
