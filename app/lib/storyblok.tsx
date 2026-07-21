@@ -12,9 +12,6 @@ import { Accordion } from "../components/Accordion";
 
 const storyblokToken = process.env.NEXT_PUBLIC_STORYBLOK_DELIVERY_API_TOKEN!;
 const storyblokRegion = process.env.NEXT_PUBLIC_STORYBLOK_REGION!;
-export const enableLivePreview =
-  process.env.NEXT_PUBLIC_STORYBLOK_ENABLE_LIVEPREVIEW === "true";
-
 export const client = createApiClient({
   accessToken: storyblokToken,
   region: storyblokRegion as "us" | "eu",
