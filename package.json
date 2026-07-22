@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@storyblok/live-preview": "^0.4.0",
-    "@storyblok/react": "https://pkg.pr.new/@storyblok/react@c5573ca",
+    "@storyblok/react": "https://pkg.pr.new/@storyblok/react@fc8fac6",
     "@storyblok/richtext": "^5.2.0",
     "next": "16.2.4",
     "react": "19.2.4",

@@ -50,20 +50,64 @@ const getWeatherProduction = unstable_cache(fetchWeatherData, ["weather"], {
 // every edit would trigger a fresh 10-second fetch, making the preview
 // unusable. The Map is module-level so it survives across requests within the
 // same server process but is cleared on a full server restart.
+//
+// TTL — each entry carries an expiry timestamp. On access, expired entries
+// are evicted and re-fetched. This prevents two problems:
+//   1. Unbounded growth: entries for locations never queried again eventually
+//      expire and are removed from the Map on the next access for that key.
+//   2. Stale data: editors always see reasonably fresh data even during a
+//      long-running preview session (data is at most DRAFT_CACHE_TTL_MS old).
+//
+// inFlightDraftFetches deduplicates *concurrent* requests for the same
+// location. Without it, multiple editor events arriving before the first
+// fetch completes (cache still empty) would each start an independent 10-
+// second fetch. By storing the in-flight Promise and reusing it, every
+// concurrent caller awaits the same underlying fetch — so only one network
+// request is made regardless of how many renders are triggered at once.
+// The map is self-cleaning: entries are deleted as soon as the fetch resolves.
 // =============================================================================
 
-const draftModeCache = new Map<string, WeatherData>();
+// 5 minutes — long enough to survive rapid editing, short enough that editors
+// see fresh data without needing a server restart.
+const DRAFT_CACHE_TTL_MS = 5 * 60 * 1000;
+
+interface DraftCacheEntry {
+  data: WeatherData;
+  expiresAt: number;
+}
+
+const draftModeCache = new Map<string, DraftCacheEntry>();
+const inFlightDraftFetches = new Map<string, Promise<WeatherData>>();
 
 async function getWeatherDraft(location: string): Promise<WeatherData> {
-  const cached = draftModeCache.get(location);
-  if (cached) {
-    console.log(`[DRAFT CACHE HIT] "${location}" — skipping fetch`);
-    return cached;
+  const entry = draftModeCache.get(location);
+  if (entry) {
+    if (Date.now() < entry.expiresAt) {
+      console.log(`[DRAFT CACHE HIT] "${location}" — skipping fetch`);
+      return entry.data;
+    }
+    // Expired — evict and fall through to re-fetch.
+    console.log(`[DRAFT CACHE EXPIRED] "${location}" — refreshing`);
+    draftModeCache.delete(location);
   }
+
+  const inFlight = inFlightDraftFetches.get(location);
+  if (inFlight) {
+    console.log(`[DRAFT IN-FLIGHT HIT] "${location}" — reusing pending fetch`);
+    return inFlight;
+  }
+
   console.log(`[DRAFT CACHE MISS] "${location}" — fetching …`);
-  const data = await fetchWeatherData(location);
-  draftModeCache.set(location, data);
-  return data;
+  const promise = fetchWeatherData(location).then((data) => {
+    draftModeCache.set(location, {
+      data,
+      expiresAt: Date.now() + DRAFT_CACHE_TTL_MS,
+    });
+    inFlightDraftFetches.delete(location);
+    return data;
+  });
+  inFlightDraftFetches.set(location, promise);
+  return promise;
 }
 
 // =============================================================================

@@ -23,10 +23,9 @@ export default async function Home() {
       <div style={{ background: "yellow", padding: "10px" }}>
         DRAFT MODE IS ON
       </div>
-      <StoryblokPreview
-        renderContent={renderContent}
-        initialContent={content}
-      />
+      <StoryblokPreview renderContent={renderContent}>
+        {content}
+      </StoryblokPreview>
     </>
   );
 }
