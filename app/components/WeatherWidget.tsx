@@ -1,6 +1,7 @@
 import { cache } from "react";
 import { unstable_cache } from "next/cache";
 import { draftMode } from "next/headers";
+import { LRUCache } from "lru-cache";
 import { storyblokEditable, type SbBlokData } from "@storyblok/react/next";
 
 interface WeatherWidgetProps {
@@ -44,51 +45,39 @@ const getWeatherProduction = unstable_cache(fetchWeatherData, ["weather"], {
 });
 
 // =============================================================================
-// Layer 2b — Draft-mode cache (in-memory Map, lives for the server process)
+// Layer 2b — Draft-mode cache (LRUCache, lives for the server process)
 //
 // The Visual Editor fires a re-render on every keystroke. Without this cache
 // every edit would trigger a fresh 10-second fetch, making the preview
-// unusable. The Map is module-level so it survives across requests within the
-// same server process but is cleared on a full server restart.
+// unusable. The cache is module-level so it survives across requests within
+// the same server process but is cleared on a full server restart.
 //
-// TTL — each entry carries an expiry timestamp. On access, expired entries
-// are evicted and re-fetched. This prevents two problems:
-//   1. Unbounded growth: entries for locations never queried again eventually
-//      expire and are removed from the Map on the next access for that key.
-//   2. Stale data: editors always see reasonably fresh data even during a
-//      long-running preview session (data is at most DRAFT_CACHE_TTL_MS old).
+// LRUCache handles two concerns automatically:
+//   • TTL (5 min) — entries expire so editors always see reasonably fresh
+//     data, and keys that are never accessed again eventually fall out.
+//   • Max size (500) — hard cap on entries; the least-recently-used key is
+//     evicted first, bounding memory regardless of how many unique locations
+//     are queried.
 //
 // inFlightDraftFetches deduplicates *concurrent* requests for the same
-// location. Without it, multiple editor events arriving before the first
-// fetch completes (cache still empty) would each start an independent 10-
-// second fetch. By storing the in-flight Promise and reusing it, every
-// concurrent caller awaits the same underlying fetch — so only one network
-// request is made regardless of how many renders are triggered at once.
-// The map is self-cleaning: entries are deleted as soon as the fetch resolves.
+// location. Multiple editor events arriving before the first fetch completes
+// (cache still empty) all share one Promise instead of each starting an
+// independent 10-second request. The map is self-cleaning: entries are
+// deleted as soon as the fetch resolves.
 // =============================================================================
 
-// 5 minutes — long enough to survive rapid editing, short enough that editors
-// see fresh data without needing a server restart.
-const DRAFT_CACHE_TTL_MS = 5 * 60 * 1000;
+const draftModeCache = new LRUCache<string, WeatherData>({
+  max: 500,
+  ttl: 5 * 60 * 1000, // 5 minutes
+});
 
-interface DraftCacheEntry {
-  data: WeatherData;
-  expiresAt: number;
-}
-
-const draftModeCache = new Map<string, DraftCacheEntry>();
 const inFlightDraftFetches = new Map<string, Promise<WeatherData>>();
 
 async function getWeatherDraft(location: string): Promise<WeatherData> {
-  const entry = draftModeCache.get(location);
-  if (entry) {
-    if (Date.now() < entry.expiresAt) {
-      console.log(`[DRAFT CACHE HIT] "${location}" — skipping fetch`);
-      return entry.data;
-    }
-    // Expired — evict and fall through to re-fetch.
-    console.log(`[DRAFT CACHE EXPIRED] "${location}" — refreshing`);
-    draftModeCache.delete(location);
+  const cached = draftModeCache.get(location);
+  if (cached) {
+    console.log(`[DRAFT CACHE HIT] "${location}" — skipping fetch`);
+    return cached;
   }
 
   const inFlight = inFlightDraftFetches.get(location);
@@ -99,10 +88,7 @@ async function getWeatherDraft(location: string): Promise<WeatherData> {
 
   console.log(`[DRAFT CACHE MISS] "${location}" — fetching …`);
   const promise = fetchWeatherData(location).then((data) => {
-    draftModeCache.set(location, {
-      data,
-      expiresAt: Date.now() + DRAFT_CACHE_TTL_MS,
-    });
+    draftModeCache.set(location, data);
     inFlightDraftFetches.delete(location);
     return data;
   });
@@ -120,7 +106,7 @@ async function getWeatherDraft(location: string): Promise<WeatherData> {
 
 const getWeather = cache(async (location: string, isDraftMode: boolean) => {
   if (isDraftMode) {
-    return getWeatherDraft(location); // → in-memory Map
+    return getWeatherDraft(location); // → LRUCache (TTL + max size)
   }
   return getWeatherProduction(location); // → Next.js Data Cache (disk/memory)
 });
