@@ -10,12 +10,18 @@ type FeatureProps = { block: Block<"feature"> };
 export default function Feature({ block }: FeatureProps) {
   return (
     <div
-      className="rounded-lg border border-zinc-700 bg-zinc-900 p-6"
+      className="group relative overflow-hidden rounded-xl border border-zinc-700/60 bg-zinc-900 p-6 transition-all duration-200 hover:border-zinc-500 hover:bg-zinc-800/80"
       {...storyblokEditable(block)}
     >
-      <h2 className="text-xl font-semibold text-zinc-100">{block.name}</h2>
+      {/* Subtle gradient accent along the top edge */}
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-indigo-500/60 to-transparent" />
+
+      <h2 className="mb-3 text-lg font-semibold text-zinc-100">{block.name}</h2>
+
       {block.description ? (
-        <StoryblokRichText document={block.description as SbRichTextDoc} />
+        <div className="text-sm leading-relaxed text-zinc-400">
+          <StoryblokRichText document={block.description as SbRichTextDoc} />
+        </div>
       ) : null}
     </div>
   );

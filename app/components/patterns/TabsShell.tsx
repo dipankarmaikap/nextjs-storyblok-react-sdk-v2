@@ -17,21 +17,23 @@ export function TabsShell({ block, children }: TabsShellProps) {
 
   return (
     <div
-      className="rounded-lg border border-zinc-600 bg-zinc-800"
+      className="overflow-hidden rounded-xl border border-zinc-700/60 bg-zinc-900"
       {...storyblokEditable(block)}
     >
-      {/* Tab buttons — labels read from block data, editable in Visual Editor */}
-      <div className="flex border-b border-zinc-700">
+      {/* Tab bar */}
+      <div className="flex border-b border-zinc-800 bg-zinc-950/40">
         {tabs.map((tab, i) => (
           <button
             key={tab._uid}
             onClick={() => setActiveIndex(i)}
             {...storyblokEditable(tab)}
-            className={`px-4 py-2 text-sm font-medium transition-colors ${
+            className={[
+              "relative px-5 py-3 text-sm font-medium transition-colors duration-150 outline-none",
+              "after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:transition-all after:duration-150",
               activeIndex === i
-                ? "border-b-2 border-zinc-100 text-zinc-100"
-                : "text-zinc-400 hover:text-zinc-200"
-            }`}
+                ? "text-zinc-100 after:bg-indigo-500"
+                : "text-zinc-500 hover:text-zinc-300 after:bg-transparent",
+            ].join(" ")}
           >
             {tab.label ?? `Tab ${i + 1}`}
           </button>
@@ -39,10 +41,10 @@ export function TabsShell({ block, children }: TabsShellProps) {
       </div>
 
       {/*
-        The panels here are ALREADY RENDERED on the server.
+        Panels are ALREADY RENDERED on the server.
         We only swap which one is visible — no re-rendering happens.
       */}
-      <div className="p-4">{panels[activeIndex]}</div>
+      <div className="p-5">{panels[activeIndex]}</div>
     </div>
   );
 }
