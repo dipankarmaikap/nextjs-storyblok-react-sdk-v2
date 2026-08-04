@@ -8,6 +8,6 @@ import { StoryblokComponent } from "./storyblok";
  * Server Action: Render Storyblok content
  */
 export async function renderContent(story: Story): Promise<ReactNode> {
-  const result = <StoryblokComponent blok={story.content} />;
+  const result = <StoryblokComponent block={story.content} />;
   return <main>{result}</main>;
 }

@@ -30,31 +30,21 @@
 // - It passes the ALREADY-RENDERED content to the Client Component
 // - The Client Component just shows/hides the pre-rendered HTML
 
-import type { SbBlokData } from "@storyblok/react/next";
 import { AccordionShell } from "./patterns/AccordionShell";
 import { StoryblokBlocks } from "../lib/storyblok";
+import { Block } from "@/app/schema/schema";
 
-interface AccordionProps {
-  blok: SbBlokData & {
-    title?: string;
-    default_open?: boolean;
-    body?: SbBlokData[];
-  };
-}
+type AccordionProps = { block: Block<"accordion"> };
 
-export function Accordion({ blok }: AccordionProps) {
+export function Accordion({ block }: AccordionProps) {
   return (
-    <AccordionShell
-      title={blok.title || "Accordion"}
-      defaultOpen={blok.default_open}
-      blok={blok}
-    >
+    <AccordionShell block={block}>
       {/* 
         StoryblokBlocks renders on the server.
         The result (React elements) is passed as children to AccordionShell.
         AccordionShell (Client Component) receives pre-rendered content.
       */}
-      {blok.body?.length ? <StoryblokBlocks blocks={blok.body} /> : null}
+      {block.body?.length ? <StoryblokBlocks blocks={block.body} /> : null}
     </AccordionShell>
   );
 }

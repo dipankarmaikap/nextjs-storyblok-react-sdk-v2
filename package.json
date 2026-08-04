@@ -7,12 +7,13 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "storyblok": "storyblok"
+    "storyblok": "node --env-file=.env ./node_modules/.bin/storyblok"
   },
   "dependencies": {
     "@storyblok/live-preview": "^0.4.0",
-    "@storyblok/react": "https://pkg.pr.new/@storyblok/react@fc8fac6",
+    "@storyblok/react": "https://pkg.pr.new/@storyblok/react@4173170",
     "@storyblok/richtext": "^5.2.0",
+    "@storyblok/schema": "^0.2.0",
     "lru-cache": "^11.5.2",
     "next": "16.2.4",
     "react": "19.2.4",
@@ -26,7 +27,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.4",
-    "storyblok": "https://pkg.pr.new/storyblok@68b2d5d",
+    "storyblok": "^4.21.2",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

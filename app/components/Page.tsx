@@ -1,20 +1,19 @@
-import { storyblokEditable, type SbBlokData } from "@storyblok/react/next";
+import { storyblokEditable } from "@storyblok/react/next";
 import { StoryblokBlocks } from "../lib/storyblok";
+import { Block } from "@/app/schema/schema";
 
-interface PageProps {
-  blok: SbBlokData & { body: SbBlokData[] };
-}
+type PageProps = { block: Block<"page"> };
 
-export default function Page({ blok }: PageProps) {
+export default function Page({ block }: PageProps) {
   console.log("[Page] Rendering");
 
-  if (!blok.body || blok.body.length === 0) {
+  if (!block.body || block.body.length === 0) {
     return null;
   }
 
   return (
-    <section className="p-8" {...storyblokEditable(blok)}>
-      <StoryblokBlocks blocks={blok.body} />
+    <section className="p-8" {...storyblokEditable(block)}>
+      <StoryblokBlocks blocks={block.body} />
     </section>
   );
 }

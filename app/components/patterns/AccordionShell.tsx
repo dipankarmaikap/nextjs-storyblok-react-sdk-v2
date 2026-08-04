@@ -5,33 +5,27 @@
 // It receives pre-rendered content as children
 
 import { useState, type ReactNode } from "react";
-import { storyblokEditable, type SbBlokData } from "@storyblok/react/next";
+import { storyblokEditable } from "@storyblok/react/next";
+import { Block } from "@/app/schema/schema";
 
 interface AccordionShellProps {
-  title: string;
+  block: Block<"accordion">;
   children: ReactNode; // Pre-rendered content from server
-  blok: SbBlokData;
-  defaultOpen?: boolean;
 }
 
-export function AccordionShell({
-  title,
-  children,
-  blok,
-  defaultOpen = false,
-}: AccordionShellProps) {
-  const [open, setOpen] = useState(defaultOpen);
+export function AccordionShell({ block, children }: AccordionShellProps) {
+  const [open, setOpen] = useState(block.default_open ?? false);
 
   return (
     <section
       className="rounded-lg border border-zinc-600 bg-zinc-800"
-      {...storyblokEditable(blok)}
+      {...storyblokEditable(block)}
     >
       <button
         onClick={() => setOpen(!open)}
         className="flex w-full items-center justify-between p-4 text-left"
       >
-        <span className="text-lg font-medium text-zinc-100">{title}</span>
+        <span className="text-lg font-medium text-zinc-100">{block.title ?? "Accordion"}</span>
         <span className="text-zinc-400">{open ? "▲" : "▼"}</span>
       </button>
 

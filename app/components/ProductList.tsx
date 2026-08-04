@@ -1,31 +1,27 @@
 // ProductList.tsx — registered blok component
 // This blok itself has no DB access, but it composes ProductRows which does
 
-import { storyblokEditable, type SbBlokData } from "@storyblok/react/next";
+import { storyblokEditable } from "@storyblok/react/next";
 import { ProductRows } from "./ProductRows";
+import { Block } from "@/app/schema/schema";
 
-interface ProductListProps {
-  blok: SbBlokData & {
-    title?: string;
-    category?: string;
-  };
-}
+type ProductListProps = { block: Block<"product_list"> };
 
-export function ProductList({ blok }: ProductListProps) {
-  console.log("[ProductList] Rendering blok");
+export function ProductList({ block }: ProductListProps) {
+  console.log("[ProductList] Rendering block");
 
   return (
     <div
       className="rounded-lg border border-zinc-600 bg-zinc-900 p-4"
-      {...storyblokEditable(blok)}
+      {...storyblokEditable(block)}
     >
-      {blok.title && (
+      {block.title && (
         <h3 className="mb-4 text-lg font-semibold text-zinc-100">
-          {blok.title}
+          {block.title}
         </h3>
       )}
       {/* ProductRows is an async server component that fetches from DB */}
-      <ProductRows category={blok.category} />
+      <ProductRows category={block.category ?? undefined} />
     </div>
   );
 }

@@ -1,21 +1,20 @@
-import { storyblokEditable, type SbBlokData } from "@storyblok/react/next";
+import { storyblokEditable } from "@storyblok/react/next";
 import { StoryblokBlocks } from "../lib/storyblok";
+import { Block } from "@/app/schema/schema";
 
-interface GridProps {
-  blok: SbBlokData & { columns: SbBlokData[] };
-}
+type GridProps = { block: Block<"grid"> };
 
-export default function Grid({ blok }: GridProps) {
-  if (!blok.columns || blok.columns.length === 0) {
+export default function Grid({ block }: GridProps) {
+  if (!block.columns || block.columns.length === 0) {
     return null;
   }
 
   return (
     <section
       className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6"
-      {...storyblokEditable(blok)}
+      {...storyblokEditable(block)}
     >
-      <StoryblokBlocks blocks={blok.columns} />
+      <StoryblokBlocks blocks={block.columns} />
     </section>
   );
 }

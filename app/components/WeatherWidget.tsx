@@ -2,11 +2,10 @@ import { cache } from "react";
 import { unstable_cache } from "next/cache";
 import { draftMode } from "next/headers";
 import { LRUCache } from "lru-cache";
-import { storyblokEditable, type SbBlokData } from "@storyblok/react/next";
+import { storyblokEditable } from "@storyblok/react/next";
+import { Block } from "@/app/schema/schema";
 
-interface WeatherWidgetProps {
-  blok: SbBlokData & { title: string; location: string };
-}
+type WeatherWidgetProps = { block: Block<"weather_widget"> };
 
 interface WeatherData {
   temperature: number;
@@ -115,24 +114,24 @@ const getWeather = cache(async (location: string, isDraftMode: boolean) => {
 // WeatherWidget Component
 // =============================================================================
 
-export async function WeatherWidget({ blok }: WeatherWidgetProps) {
+export async function WeatherWidget({ block }: WeatherWidgetProps) {
   // Read the real draft-mode state from the request cookie.
   // This must happen inside the component (request-scoped), not at module level.
   const { isEnabled: isDraftMode } = await draftMode();
 
   console.log(
-    `[WeatherWidget] rendering "${blok.location}" (draft=${isDraftMode})`,
+    `[WeatherWidget] rendering "${block.location}" (draft=${isDraftMode})`,
   );
-  const weatherData = await getWeather(blok.location, isDraftMode);
+  const weatherData = await getWeather(block.location ?? "", isDraftMode);
   console.log(`[WeatherWidget] done (fetchId=${weatherData.fetchId})`);
 
   return (
     <div
       className="rounded-lg border border-zinc-700 bg-zinc-900 p-6 mb-6"
-      {...storyblokEditable(blok)}
+      {...storyblokEditable(block)}
     >
-      <h3 className="text-lg font-semibold text-zinc-100">{blok.title}</h3>
-      <p className="text-sm text-zinc-500 mt-1">Location: {blok.location}</p>
+      <h3 className="text-lg font-semibold text-zinc-100">{block.title}</h3>
+      <p className="text-sm text-zinc-500 mt-1">Location: {block.location}</p>
 
       <div className="mt-4 grid grid-cols-2 gap-4">
         <div>
