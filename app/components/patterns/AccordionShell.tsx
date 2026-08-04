@@ -6,7 +6,7 @@
 
 import { useState, type ReactNode } from "react";
 import { storyblokEditable } from "@storyblok/react/next";
-import { Block } from "@/app/schema/schema";
+import { Block } from "@/schema/schema";
 
 interface AccordionShellProps {
   block: Block<"accordion">;

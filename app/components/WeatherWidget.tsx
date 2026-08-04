@@ -3,7 +3,7 @@ import { unstable_cache } from "next/cache";
 import { draftMode } from "next/headers";
 import { LRUCache } from "lru-cache";
 import { storyblokEditable } from "@storyblok/react/next";
-import { Block } from "@/app/schema/schema";
+import { Block } from "@/schema/schema";
 
 type WeatherWidgetProps = { block: Block<"weather_widget"> };
 

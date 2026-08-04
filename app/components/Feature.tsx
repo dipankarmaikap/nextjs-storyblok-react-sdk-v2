@@ -1,4 +1,4 @@
-import { Block } from "@/app/schema/schema";
+import { Block } from "@/schema/schema";
 import {
   storyblokEditable,
   StoryblokRichText,

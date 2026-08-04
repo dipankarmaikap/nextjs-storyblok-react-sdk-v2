@@ -1,6 +1,6 @@
 import { storyblokEditable } from "@storyblok/react/next";
 import { StoryblokBlocks } from "../lib/storyblok";
-import { Block } from "@/app/schema/schema";
+import { Block } from "@/schema/schema";
 
 type GridProps = { block: Block<"grid"> };
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { storyblokEditable } from "@storyblok/react/next";
-import { Block } from "@/app/schema/schema";
+import { Block } from "@/schema/schema";
 
 type TeaserProps = { block: Block<"teaser"> };
 

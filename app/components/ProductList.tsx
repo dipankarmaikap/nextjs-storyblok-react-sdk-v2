@@ -3,7 +3,7 @@
 
 import { storyblokEditable } from "@storyblok/react/next";
 import { ProductRows } from "./ProductRows";
-import { Block } from "@/app/schema/schema";
+import { Block } from "@/schema/schema";
 
 type ProductListProps = { block: Block<"product_list"> };
 

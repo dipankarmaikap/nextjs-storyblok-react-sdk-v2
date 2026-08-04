@@ -32,7 +32,7 @@
 
 import { AccordionShell } from "./patterns/AccordionShell";
 import { StoryblokBlocks } from "../lib/storyblok";
-import { Block } from "@/app/schema/schema";
+import { Block } from "@/schema/schema";
 
 type AccordionProps = { block: Block<"accordion"> };
 
