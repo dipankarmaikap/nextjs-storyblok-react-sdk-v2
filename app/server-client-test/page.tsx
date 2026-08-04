@@ -2,11 +2,12 @@ import { StoryblokPreview } from "@storyblok/react/next/rsc";
 import { draftMode } from "next/headers";
 import { renderContent } from "../lib/actions";
 import { client } from "../lib/storyblok";
+import { DraftModeBanner } from "../components/DraftModeBanner";
 
 export default async function Home() {
   const { isEnabled: isDraftMode } = await draftMode();
   const { data } = await client.stories.get("server-client-test", {
-    query: { version: 'draft' },
+    query: { version: "draft" },
   });
   const story = data?.story;
   if (!story) {
@@ -14,16 +15,13 @@ export default async function Home() {
   }
   const content = await renderContent(story);
 
-  // Only show live preview when in draft mode
   if (!isDraftMode) {
     return content;
   }
 
   return (
     <>
-      <div style={{ background: "yellow", padding: "10px" }}>
-        DRAFT MODE IS ON
-      </div>
+      <DraftModeBanner />
       <StoryblokPreview renderContent={renderContent}>
         {content}
       </StoryblokPreview>
