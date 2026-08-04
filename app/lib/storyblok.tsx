@@ -9,6 +9,8 @@ import { WeatherWidget } from "../components/WeatherWidget";
 import { WeatherWidgetSkeleton } from "../components/WeatherWidgetSkeleton";
 import { ProductList } from "../components/ProductList";
 import { Accordion } from "../components/Accordion";
+import { Tabs } from "../components/Tabs";
+import { TabItem } from "../components/TabItem";
 
 const storyblokToken = process.env.NEXT_PUBLIC_STORYBLOK_DELIVERY_API_TOKEN!;
 const storyblokRegion = process.env.NEXT_PUBLIC_STORYBLOK_REGION!;
@@ -25,6 +27,8 @@ export const { StoryblokComponent, StoryblokBlocks } = createRegistry({
     feature: Feature,
     product_list: ProductList,
     accordion: Accordion,
+    tabs: Tabs,
+    tab_item: TabItem,
     weather_widget: {
       component: WeatherWidget,
       fallback: <WeatherWidgetSkeleton />,
