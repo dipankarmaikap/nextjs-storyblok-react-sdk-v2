@@ -1,33 +1,35 @@
-import { Suspense } from "react";
 import { StoryblokPreview } from "@storyblok/react/next/rsc";
 import { draftMode } from "next/headers";
 import { renderContent } from "./lib/actions";
 import { client, StoryblokComponent } from "./lib/storyblok";
 import { DraftModeBanner } from "./components/DraftModeBanner";
-import type { Story } from "@storyblok/react/next";
 
 export default async function Home() {
   const { isEnabled: isDraftMode } = await draftMode();
+  const { data } = await client.stories.get("home", {
+    query: { version: "draft" },
+  });
+  const story = data?.story;
+  if (!story) {
+    return <main>Story not found</main>;
+  }
 
-  // Start the story fetch without awaiting it.
+  // Build the content tree directly — do not call renderContent here.
   //
-  // Passing an unresolved promise into the Suspense tree lets Next.js stream
-  // the page shell (DraftModeBanner, layout) immediately. StoryContent
-  // suspends only for the story fetch; WeatherWidget inside it suspends
-  // independently via its own boundary — they don't block each other.
+  // renderContent is a Server Action intended for client-side calls from
+  // StoryblokPreview when the editor sends an updated story. Calling it here
+  // and awaiting the result would have the same effect as any other named prop
+  // containing async server components: the RSC serialiser would need to fully
+  // await every async component in the tree (e.g. WeatherWidget, 10 s fetch)
+  // before it could send any HTML, bypassing Suspense streaming entirely.
   //
-  // https://nextjs.org/docs/app/guides/streaming#streaming-data-to-the-client
-  const storyPromise: Promise<Story | null> = client.stories
-    .get("home", { query: { version: "draft" } })
-    .then((r) => r.data?.story ?? null);
-
-  // Wrap in Suspense so StoryContent can suspend on storyPromise without
-  // blocking the surrounding shell from painting.
+  // Building the tree directly keeps it inside React's RSC streaming channel.
+  // The registry's `suspense: true` entries (WeatherWidget) add their own
+  // <Suspense fallback={skeleton}> boundaries, so the page sends the skeleton
+  // immediately and streams the resolved content once the async work completes.
   const content = (
     <main>
-      <Suspense>
-        <StoryContent storyPromise={storyPromise} />
-      </Suspense>
+      <StoryblokComponent block={story.content} />
     </main>
   );
 
@@ -39,38 +41,14 @@ export default async function Home() {
     <>
       <DraftModeBanner />
       {/*
-       * renderContent is the server action called on every editor update.
-       * children is the initial streamed content — StoryblokPreview returns
-       * it directly on first render so its internal Suspense boundaries
-       * (WeatherWidget skeleton, etc.) still stream normally.
-       *
-       * On editor updates, StoryblokPreview shows the last committed content
-       * as the Suspense fallback while renderContent streams its RSC response,
-       * so the page is never blank and slow components (WeatherWidget) show
-       * their skeleton until their data arrives.
+       * renderContent is only invoked by StoryblokPreview when the Storyblok
+       * Visual Editor fires an updated-story event. children carries the
+       * initial SSR tree so the page is not blank on first load and Suspense
+       * boundaries inside it (WeatherWidget skeleton, etc.) stream normally.
        */}
       <StoryblokPreview renderContent={renderContent}>
         {content}
       </StoryblokPreview>
     </>
   );
-}
-
-/**
- * Async server component that awaits the story promise and renders the
- * Storyblok component tree. Lives inside a <Suspense> boundary so it
- * suspends only this subtree while the story loads, not the whole page.
- */
-async function StoryContent({
-  storyPromise,
-}: {
-  storyPromise: Promise<Story | null>;
-}) {
-  const story = await storyPromise;
-
-  if (!story) {
-    return <p>Story not found</p>;
-  }
-
-  return <StoryblokComponent block={story.content} />;
 }
