@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@storyblok/live-preview": "^0.4.0",
-    "@storyblok/react": "https://pkg.pr.new/@storyblok/react@7866a46",
+    "@storyblok/react": "https://pkg.pr.new/@storyblok/react@dcf758c",
     "@storyblok/richtext": "^5.2.0",
     "@storyblok/schema": "^0.2.0",
     "lru-cache": "^11.5.2",
