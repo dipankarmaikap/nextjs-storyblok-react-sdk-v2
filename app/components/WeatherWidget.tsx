@@ -1,8 +1,8 @@
 import { cache } from "react";
 import { unstable_cache } from "next/cache";
-import { draftMode } from "next/headers";
 import { storyblokEditable } from "@storyblok/react/next";
 import { Block } from "@/schema/schema";
+import { isPreview } from "@/app/lib/storyblok";
 
 type WeatherWidgetProps = { block: Block<"weather_widget"> };
 
@@ -71,14 +71,10 @@ const getWeather = cache(async (location: string, isDraftMode: boolean) => {
 // =============================================================================
 
 export async function WeatherWidget({ block }: WeatherWidgetProps) {
-  // Read the real draft-mode state from the request cookie.
-  // This must happen inside the component (request-scoped), not at module level.
-  const { isEnabled: isDraftMode } = await draftMode();
-
   console.log(
-    `[WeatherWidget] rendering "${block.location}" (draft=${isDraftMode})`,
+    `[WeatherWidget] rendering "${block.location}" (preview=${isPreview})`,
   );
-  const weatherData = await getWeather(block.location ?? "", isDraftMode);
+  const weatherData = await getWeather(block.location ?? "", isPreview);
   console.log(`[WeatherWidget] done (fetchId=${weatherData.fetchId})`);
 
   return (
@@ -107,7 +103,7 @@ export async function WeatherWidget({ block }: WeatherWidgetProps) {
       <div className="mt-4 text-xs text-zinc-600 font-mono space-y-1">
         <p>Fetched: {weatherData.fetchedAt}</p>
         <p>Fetch ID: {weatherData.fetchId}</p>
-        <p>Mode: {isDraftMode ? "draft" : "production"}</p>
+        <p>Mode: {isPreview ? "preview" : "production"}</p>
       </div>
     </div>
   );

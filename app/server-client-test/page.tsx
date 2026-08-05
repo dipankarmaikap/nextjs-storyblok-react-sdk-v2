@@ -1,36 +1,28 @@
 import { Suspense } from "react";
 import { StoryblokPreview } from "@storyblok/react/next/rsc";
-import { draftMode } from "next/headers";
 import { renderContent } from "../lib/actions";
-import { client, StoryblokComponent } from "../lib/storyblok";
-import { DraftModeBanner } from "../components/DraftModeBanner";
+import { client, StoryblokComponent, isPreview } from "../lib/storyblok";
+import { PreviewBanner } from "../components/PreviewBanner";
 
 // See app/page.tsx for a full explanation of the sync-page / async-child
-// pattern and why it is required for streaming to work correctly.
+// pattern and the STORYBLOK_ENV env-var approach.
 export default function Home() {
-  const draftModePromise = draftMode();
   const storyPromise = client.stories.get("server-client-test", {
-    query: { version: "draft" },
+    query: { version: isPreview ? "draft" : "published" },
   });
 
   return (
     <Suspense>
-      <PageContent
-        draftModePromise={draftModePromise}
-        storyPromise={storyPromise}
-      />
+      <PageContent storyPromise={storyPromise} />
     </Suspense>
   );
 }
 
 async function PageContent({
-  draftModePromise,
   storyPromise,
 }: {
-  draftModePromise: ReturnType<typeof draftMode>;
   storyPromise: ReturnType<typeof client.stories.get>;
 }) {
-  const { isEnabled: isDraftMode } = await draftModePromise;
   const { data } = await storyPromise;
   const story = data?.story;
 
@@ -38,23 +30,19 @@ async function PageContent({
     return <main>Story not found</main>;
   }
 
-  // Render directly as JSX — not via the server action — so Suspense boundaries
-  // inside (e.g. WeatherWidget) stream immediately instead of the RSC serializer
-  // fully awaiting every async component before sending any HTML.
   const content = (
     <main>
       <StoryblokComponent block={story.content} />
     </main>
   );
 
-  if (!isDraftMode) {
+  if (!isPreview) {
     return content;
   }
 
   return (
     <>
-      <DraftModeBanner />
-      {/* renderContent is only used for live editor updates, not the initial load */}
+      <PreviewBanner />
       <StoryblokPreview renderContent={renderContent}>
         {content}
       </StoryblokPreview>
