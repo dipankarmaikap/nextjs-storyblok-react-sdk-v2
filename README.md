@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js + `@storyblok/react` v2 — Playground
 
-## Getting Started
+A fully working Next.js App Router example for the `@storyblok/react` v2 SDK.
+Read the full guide for a deep-dive on how everything is wired up:
+[packages/react/src/v2/guide.md](https://github.com/storyblok/monoblok/blob/feature/new-react-sdk/packages/react/src/v2/guide.md)
 
-First, run the development server:
+---
+
+## Prerequisites
+
+- Node.js 18+
+- A Storyblok space ([sign up free](https://app.storyblok.com/#!/signup))
+
+---
+
+## 1. Install dependencies
+
+```bash
+npm install
+```
+
+The SDK is installed from a prerelease build via [pkg.pr.new](https://pkg.pr.new) — no extra registry config needed.
+
+---
+
+## 2. Set up environment variables
+
+```bash
+cp .env.example .env.local
+```
+
+Open `.env.local` and fill in your values:
+
+| Variable | Where to find it | Notes |
+|---|---|---|
+| `STORYBLOK_MAPI_TOKEN` | My Account → Access Tokens | Full-access personal token; never exposed to the browser |
+| `NEXT_PUBLIC_STORYBLOK_DELIVERY_API_TOKEN` | Space → Settings → Access Tokens | Use a **Public** token |
+| `NEXT_PUBLIC_STORYBLOK_REGION` | Space → Settings → General | `eu`, `us`, `ap`, or `ca` |
+| `STORYBLOK_ENV` | — | Set to `preview` on your preview deployment; leave unset for production |
+
+---
+
+## 3. Push the schema to your space
+
+This repo ships with a typed component schema in `schema/`. You can push it to a new (or existing) space to create all the components automatically — no manual setup in the UI required.
+
+```bash
+npm run storyblok -- schema push schema/schema.ts
+```
+
+The `storyblok` script in `package.json` loads your `.env` file automatically, so `STORYBLOK_MAPI_TOKEN` and the space ID in `storyblok.config.ts` are picked up without any extra flags.
+
+> See the [Storyblok CLI schema push docs](https://www.storyblok.com/docs/libraries/storyblok-cli#schema-push) for available flags (e.g. `--space-id`, `--dry-run`).
+
+---
+
+## 4. Run the dev server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The dev server starts with HTTPS (`--experimental-https`) because the Storyblok Visual Editor requires a secure origin for the bridge connection. Open [https://localhost:3000](https://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Deployment: production vs. preview
 
-## Learn More
+This app uses two deployments of the same codebase with different caching strategies, controlled by a single env var:
 
-To learn more about Next.js, take a look at the following resources:
+| Deployment | `STORYBLOK_ENV` | Fetches | Caching | Live editing |
+|---|---|---|---|---|
+| Production | unset | `published` stories | cache-first (60 s) | off |
+| Preview | `preview` | `draft` stories | network-first (always fresh) | on |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Point your Storyblok space's **Visual Editor preview URL** at the preview deployment. See the [guide](https://github.com/storyblok/monoblok/blob/feature/new-react-sdk/packages/react/src/v2/guide.md#3-production-vs-preview-the-two-deployment-strategy) for details.
