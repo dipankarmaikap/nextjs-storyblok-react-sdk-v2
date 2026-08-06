@@ -2,12 +2,11 @@
 
 import type { ReactNode } from "react";
 import type { Story } from "@storyblok/react/next";
-import { StoryblokComponent } from "./storyblok";
+import { StoryContent } from "../components/StoryContent";
 
 /**
  * Server Action: Render Storyblok content
  */
 export async function renderContent(story: Story): Promise<ReactNode> {
-  const result = <StoryblokComponent block={story.content} />;
-  return <main>{result}</main>;
+  return <StoryContent story={story} />;
 }
