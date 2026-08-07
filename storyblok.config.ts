@@ -1,7 +1,6 @@
 import { defineConfig } from "storyblok/config";
 
 export default defineConfig({
-  space: "293579761007546",
+  space: process.env.STORYBLOK_SPACE_ID,
   path: ".storyblok",
-  token: process.env.STORYBLOK_MAPI_TOKEN,
 });
