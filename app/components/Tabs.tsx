@@ -1,4 +1,4 @@
-import { StoryblokBlocks } from "../lib/storyblok";
+import { StoryblokComponent } from "../lib/storyblok";
 import { Block } from "@/schema/schema";
 import { TabsShell } from "./patterns/TabsShell";
 
@@ -14,7 +14,7 @@ export function Tabs({ block }: TabsProps) {
       */}
       {block.body?.map((tab) => (
         <div key={tab._uid}>
-          {tab.body?.length ? <StoryblokBlocks blocks={tab.body} /> : null}
+          {tab.body?.length ? <StoryblokComponent block={tab.body} /> : null}
         </div>
       ))}
     </TabsShell>

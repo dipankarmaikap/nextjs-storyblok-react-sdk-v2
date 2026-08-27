@@ -1,5 +1,5 @@
-import { storyblokEditable } from "@storyblok/react/next";
-import { StoryblokBlocks } from "../lib/storyblok";
+import { storyblokEditable } from "@storyblok/react";
+import { StoryblokComponent } from "../lib/storyblok";
 import { Block } from "@/schema/schema";
 
 type PageProps = { block: Block<"page"> };
@@ -13,7 +13,7 @@ export default function Page({ block }: PageProps) {
 
   return (
     <section className="p-8" {...storyblokEditable(block)}>
-      <StoryblokBlocks blocks={block.body} />
+      <StoryblokComponent block={block.body} />
     </section>
   );
 }

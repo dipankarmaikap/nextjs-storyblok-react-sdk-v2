@@ -2,7 +2,7 @@
 
 import { useState, type ReactNode } from "react";
 import React from "react";
-import { storyblokEditable } from "@storyblok/react/next";
+import { storyblokEditable } from "@storyblok/react";
 import { Block } from "@/schema/schema";
 
 interface TabsShellProps {

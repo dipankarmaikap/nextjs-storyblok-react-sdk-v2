@@ -1,6 +1,6 @@
 import { cache } from "react";
 import { unstable_cache } from "next/cache";
-import { storyblokEditable } from "@storyblok/react/next";
+import { storyblokEditable } from "@storyblok/react";
 import { Block } from "@/schema/schema";
 
 type WeatherWidgetProps = { block: Block<"weather_widget"> };

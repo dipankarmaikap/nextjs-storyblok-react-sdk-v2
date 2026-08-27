@@ -31,7 +31,7 @@
 // - The Client Component just shows/hides the pre-rendered HTML
 
 import { AccordionShell } from "./patterns/AccordionShell";
-import { StoryblokBlocks } from "../lib/storyblok";
+import { StoryblokComponent } from "../lib/storyblok";
 import { Block } from "@/schema/schema";
 
 type AccordionProps = { block: Block<"accordion"> };
@@ -44,7 +44,7 @@ export function Accordion({ block }: AccordionProps) {
         The result (React elements) is passed as children to AccordionShell.
         AccordionShell (Client Component) receives pre-rendered content.
       */}
-      {block.body?.length ? <StoryblokBlocks blocks={block.body} /> : null}
+      {block.body?.length ? <StoryblokComponent block={block.body} /> : null}
     </AccordionShell>
   );
 }

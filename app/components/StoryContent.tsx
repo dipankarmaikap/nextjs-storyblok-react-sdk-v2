@@ -1,4 +1,4 @@
-import type { Story } from "@storyblok/react/next";
+import type { Story } from "@storyblok/react";
 import { StoryblokComponent } from "../lib/storyblok";
 
 type StoryContentProps = { story: Story };

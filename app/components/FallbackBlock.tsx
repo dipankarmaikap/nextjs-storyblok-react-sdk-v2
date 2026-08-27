@@ -1,7 +1,7 @@
-import { storyblokEditable, type SbBlokData } from "@storyblok/react/next";
+import { storyblokEditable, type StoryblokBlockData } from "@storyblok/react";
 
 interface FallbackBlockProps {
-  block: SbBlokData;
+  block: StoryblokBlockData;
 }
 
 export default function FallbackBlock({ block }: FallbackBlockProps) {

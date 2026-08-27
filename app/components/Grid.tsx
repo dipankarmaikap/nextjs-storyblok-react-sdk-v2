@@ -1,5 +1,5 @@
-import { storyblokEditable } from "@storyblok/react/next";
-import { StoryblokBlocks } from "../lib/storyblok";
+import { storyblokEditable } from "@storyblok/react";
+import { StoryblokComponent } from "../lib/storyblok";
 import { Block } from "@/schema/schema";
 
 type GridProps = { block: Block<"grid"> };
@@ -14,7 +14,7 @@ export default function Grid({ block }: GridProps) {
       className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6"
       {...storyblokEditable(block)}
     >
-      <StoryblokBlocks blocks={block.columns} />
+      <StoryblokComponent block={block.columns} />
     </section>
   );
 }

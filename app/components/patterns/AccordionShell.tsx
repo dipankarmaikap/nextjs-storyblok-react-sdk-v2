@@ -5,7 +5,7 @@
 // It receives pre-rendered content as children
 
 import { useState, type ReactNode } from "react";
-import { storyblokEditable } from "@storyblok/react/next";
+import { storyblokEditable } from "@storyblok/react";
 import { Block } from "@/schema/schema";
 
 interface AccordionShellProps {

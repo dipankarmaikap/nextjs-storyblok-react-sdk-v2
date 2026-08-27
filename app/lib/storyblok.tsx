@@ -1,4 +1,4 @@
-import { createRegistry, createApiClient } from "@storyblok/react/next";
+import { defineStoryblokComponents, createApiClient } from "@storyblok/react";
 
 import Page from "../components/Page";
 import Grid from "../components/Grid";
@@ -35,7 +35,7 @@ export const client = createApiClient({
   ...(isPreview && { cache: { strategy: "network-first" } }),
 });
 
-export const { StoryblokComponent, StoryblokBlocks } = createRegistry({
+export const { StoryblokComponent } = defineStoryblokComponents({
   components: {
     page: Page,
     grid: Grid,

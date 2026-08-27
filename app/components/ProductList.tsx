@@ -1,7 +1,7 @@
 // ProductList.tsx — registered blok component
 // This blok itself has no DB access, but it composes ProductRows which does
 
-import { storyblokEditable } from "@storyblok/react/next";
+import { storyblokEditable } from "@storyblok/react";
 import { ProductRows } from "./ProductRows";
 import { Block } from "@/schema/schema";
 

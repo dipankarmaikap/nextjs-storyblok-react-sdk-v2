@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { StoryblokPreview } from "@storyblok/react/next/rsc";
+import { StoryblokPreviewRsc } from "@storyblok/react/client";
 import { renderContent } from "../lib/actions";
 import { client, isPreview } from "../lib/storyblok";
 import { PreviewBanner } from "../components/PreviewBanner";
@@ -54,9 +54,9 @@ async function PageContent({
   return (
     <>
       <PreviewBanner />
-      <StoryblokPreview renderContent={renderContent}>
+      <StoryblokPreviewRsc renderContent={renderContent}>
         {content}
-      </StoryblokPreview>
+      </StoryblokPreviewRsc>
     </>
   );
 }
