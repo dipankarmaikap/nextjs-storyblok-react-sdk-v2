@@ -30,15 +30,16 @@
 // - It passes the ALREADY-RENDERED content to the Client Component
 // - The Client Component just shows/hides the pre-rendered HTML
 
+import { StoryblokComponentProps } from "@storyblok/react";
 import { AccordionShell } from "./patterns/AccordionShell";
 import { StoryblokComponent } from "../lib/storyblok";
 import { Block } from "@/schema/schema";
 
-type AccordionProps = { block: Block<"accordion"> };
+type AccordionProps = StoryblokComponentProps<Block<"accordion">>;
 
-export function Accordion({ block }: AccordionProps) {
+export function Accordion({ block, editable }: AccordionProps) {
   return (
-    <AccordionShell block={block}>
+    <AccordionShell block={block} editable={editable}>
       {/* 
         StoryblokBlocks renders on the server.
         The result (React elements) is passed as children to AccordionShell.

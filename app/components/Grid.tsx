@@ -1,10 +1,10 @@
-import { storyblokEditable } from "@storyblok/react";
+import { StoryblokComponentProps } from "@storyblok/react";
 import { StoryblokComponent } from "../lib/storyblok";
 import { Block } from "@/schema/schema";
 
-type GridProps = { block: Block<"grid"> };
+type GridProps = StoryblokComponentProps<Block<"grid">>;
 
-export default function Grid({ block }: GridProps) {
+export default function Grid({ block, editable }: GridProps) {
   if (!block.columns || block.columns.length === 0) {
     return null;
   }
@@ -12,7 +12,7 @@ export default function Grid({ block }: GridProps) {
   return (
     <section
       className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6"
-      {...storyblokEditable(block)}
+      {...editable}
     >
       <StoryblokComponent block={block.columns} />
     </section>

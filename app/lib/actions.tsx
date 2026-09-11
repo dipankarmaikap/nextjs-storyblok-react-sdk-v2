@@ -1,12 +1,12 @@
 "use server";
 
-import type { ReactNode } from "react";
 import type { Story } from "@storyblok/react";
-import { StoryContent } from "../components/StoryContent";
+import type { ReactNode } from "react";
+import { StoryContent } from "@/app/components/StoryContent";
+import { LivePreviewStory } from "@storyblok/live-preview";
 
-/**
- * Server Action: Render Storyblok content
- */
-export async function renderContent(story: Story): Promise<ReactNode> {
-  return <StoryContent story={story} />;
+export async function renderContent(story: LivePreviewStory): Promise<ReactNode> {
+  // LivePreviewStory is the minimal bridge payload type; the bridge sends the
+  // full story at runtime so the cast is safe.
+  return <StoryContent story={story as Story} />;
 }

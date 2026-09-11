@@ -1,12 +1,12 @@
-import { storyblokEditable } from "@storyblok/react";
+import { StoryblokComponentProps } from "@storyblok/react";
 import { StoryblokComponent } from "../lib/storyblok";
 import { Block } from "@/schema/schema";
 
-type TabItemProps = { block: Block<"tab_item"> };
+type TabItemProps = StoryblokComponentProps<Block<"tab_item">>;
 
-export function TabItem({ block }: TabItemProps) {
+export function TabItem({ block, editable }: TabItemProps) {
   return (
-    <div {...storyblokEditable(block)}>
+    <div {...editable}>
       {block.body?.length ? <StoryblokComponent block={block.body} /> : null}
     </div>
   );

@@ -1,15 +1,15 @@
 "use client";
 
-import { storyblokEditable } from "@storyblok/react";
+import { StoryblokComponentProps } from "@storyblok/react";
 import { Block } from "@/schema/schema";
 
-type TeaserProps = { block: Block<"teaser"> };
+type TeaserProps = StoryblokComponentProps<Block<"teaser">>;
 
-export default function Teaser({ block }: TeaserProps) {
+export default function Teaser({ block, editable }: TeaserProps) {
   return (
     <div
       className="relative overflow-hidden rounded-xl border border-zinc-700/60 bg-zinc-900 px-8 py-12 text-center"
-      {...storyblokEditable(block)}
+      {...editable}
     >
       {/* Background radial glow */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,rgba(99,102,241,0.12),transparent_70%)]" />

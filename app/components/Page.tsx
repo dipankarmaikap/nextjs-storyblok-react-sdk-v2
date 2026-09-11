@@ -1,18 +1,16 @@
-import { storyblokEditable } from "@storyblok/react";
+import { StoryblokComponentProps } from "@storyblok/react";
 import { StoryblokComponent } from "../lib/storyblok";
 import { Block } from "@/schema/schema";
 
-type PageProps = { block: Block<"page"> };
+type PageProps = StoryblokComponentProps<Block<"page">>;
 
-export default function Page({ block }: PageProps) {
-  console.log("[Page] Rendering");
-
+export default function Page({ block, editable }: PageProps) {
   if (!block.body || block.body.length === 0) {
     return null;
   }
 
   return (
-    <section className="p-8" {...storyblokEditable(block)}>
+    <section className="p-8" {...editable}>
       <StoryblokComponent block={block.body} />
     </section>
   );

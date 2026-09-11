@@ -1,4 +1,4 @@
-import { defineStoryblokComponents, createApiClient } from "@storyblok/react";
+import { defineStoryblokComponents } from "@storyblok/react";
 
 import Page from "../components/Page";
 import Grid from "../components/Grid";
@@ -11,6 +11,7 @@ import { ProductList } from "../components/ProductList";
 import { Accordion } from "../components/Accordion";
 import { Tabs } from "../components/Tabs";
 import { TabItem } from "../components/TabItem";
+import { createApiClient } from "@storyblok/api-client";
 
 /**
  * True on the preview deployment (STORYBLOK_ENV=preview).
@@ -29,9 +30,6 @@ const storyblokRegion = process.env.NEXT_PUBLIC_STORYBLOK_REGION!;
 export const client = createApiClient({
   accessToken: storyblokToken,
   region: storyblokRegion as "us" | "eu",
-  // On the preview deployment, bypass the in-memory cache so every request
-  // fetches the latest draft content from Storyblok directly.
-  // On production, the default cache-first strategy (60 s TTL) applies.
   ...(isPreview && { cache: { strategy: "network-first" } }),
 });
 

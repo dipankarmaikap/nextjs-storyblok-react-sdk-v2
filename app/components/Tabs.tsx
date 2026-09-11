@@ -1,12 +1,13 @@
+import { StoryblokComponentProps } from "@storyblok/react";
 import { StoryblokComponent } from "../lib/storyblok";
 import { Block } from "@/schema/schema";
 import { TabsShell } from "./patterns/TabsShell";
 
-type TabsProps = { block: Block<"tabs"> };
+type TabsProps = StoryblokComponentProps<Block<"tabs">>;
 
-export function Tabs({ block }: TabsProps) {
+export function Tabs({ block, editable }: TabsProps) {
   return (
-    <TabsShell block={block}>
+    <TabsShell block={block} editable={editable}>
       {/*
         Each tab panel is rendered on the server.
         TabsShell (Client Component) receives pre-rendered content

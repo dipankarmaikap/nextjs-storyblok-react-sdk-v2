@@ -5,21 +5,20 @@
 // It receives pre-rendered content as children
 
 import { useState, type ReactNode } from "react";
-import { storyblokEditable } from "@storyblok/react";
+import { StoryblokComponentProps } from "@storyblok/react";
 import { Block } from "@/schema/schema";
 
-interface AccordionShellProps {
-  block: Block<"accordion">;
+interface AccordionShellProps extends StoryblokComponentProps<Block<"accordion">> {
   children: ReactNode; // Pre-rendered content from server
 }
 
-export function AccordionShell({ block, children }: AccordionShellProps) {
+export function AccordionShell({ block, editable, children }: AccordionShellProps) {
   const [open, setOpen] = useState(block.default_open ?? false);
 
   return (
     <section
       className="overflow-hidden rounded-xl border border-zinc-700/60 bg-zinc-900 transition-colors duration-150 hover:border-zinc-600"
-      {...storyblokEditable(block)}
+      {...editable}
     >
       <button
         onClick={() => setOpen(!open)}

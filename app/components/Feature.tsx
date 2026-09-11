@@ -1,16 +1,13 @@
 import { Block } from "@/schema/schema";
-import {
-  storyblokEditable,
-  StoryblokRichText,
-} from "@storyblok/react";
+import { StoryblokComponentProps, StoryblokRichText } from "@storyblok/react";
 
-type FeatureProps = { block: Block<"feature"> };
+type FeatureProps = StoryblokComponentProps<Block<"feature">>;
 
-export default function Feature({ block }: FeatureProps) {
+export default function Feature({ block, editable }: FeatureProps) {
   return (
     <div
       className="group relative overflow-hidden rounded-xl border border-zinc-700/60 bg-zinc-900 p-6 transition-all duration-200 hover:border-zinc-500 hover:bg-zinc-800/80"
-      {...storyblokEditable(block)}
+      {...editable}
     >
       {/* Subtle gradient accent along the top edge */}
       <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-indigo-500/60 to-transparent" />

@@ -10,8 +10,9 @@
     "storyblok": "node --env-file=.env ./node_modules/.bin/storyblok"
   },
   "dependencies": {
+    "@storyblok/api-client": "^0.7.3",
     "@storyblok/live-preview": "^0.4.0",
-    "@storyblok/react": "https://pkg.pr.new/@storyblok/react@08ae208",
+    "@storyblok/react": "https://pkg.pr.new/@storyblok/react@4090bf6",
     "@storyblok/richtext": "^5.2.0",
     "@storyblok/schema": "^0.2.0",
     "lru-cache": "^11.5.2",

@@ -2,15 +2,14 @@
 
 import { useState, type ReactNode } from "react";
 import React from "react";
-import { storyblokEditable } from "@storyblok/react";
+import { StoryblokComponentProps, storyblokEditable } from "@storyblok/react";
 import { Block } from "@/schema/schema";
 
-interface TabsShellProps {
-  block: Block<"tabs">;
+interface TabsShellProps extends StoryblokComponentProps<Block<"tabs">> {
   children: ReactNode; // Pre-rendered tab panels from server
 }
 
-export function TabsShell({ block, children }: TabsShellProps) {
+export function TabsShell({ block, editable, children }: TabsShellProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const panels = React.Children.toArray(children);
   const tabs = block.body ?? [];
@@ -18,7 +17,7 @@ export function TabsShell({ block, children }: TabsShellProps) {
   return (
     <div
       className="overflow-hidden rounded-xl border border-zinc-700/60 bg-zinc-900"
-      {...storyblokEditable(block)}
+      {...editable}
     >
       {/* Tab bar */}
       <div className="flex border-b border-zinc-800 bg-zinc-950/40">

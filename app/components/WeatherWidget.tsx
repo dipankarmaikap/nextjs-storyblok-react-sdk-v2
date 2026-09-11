@@ -1,9 +1,9 @@
 import { cache } from "react";
 import { unstable_cache } from "next/cache";
-import { storyblokEditable } from "@storyblok/react";
+import { StoryblokComponentProps } from "@storyblok/react";
 import { Block } from "@/schema/schema";
 
-type WeatherWidgetProps = { block: Block<"weather_widget"> };
+type WeatherWidgetProps = StoryblokComponentProps<Block<"weather_widget">>;
 
 interface WeatherData {
   temperature: number;
@@ -57,7 +57,7 @@ const getWeather = cache(getCachedWeather);
 // WeatherWidget Component
 // =============================================================================
 
-export async function WeatherWidget({ block }: WeatherWidgetProps) {
+export async function WeatherWidget({ block, editable }: WeatherWidgetProps) {
   console.log(`[WeatherWidget] rendering "${block.location}"`);
   const weatherData = await getWeather(block.location ?? "");
   console.log(`[WeatherWidget] done (fetchId=${weatherData.fetchId})`);
@@ -65,7 +65,7 @@ export async function WeatherWidget({ block }: WeatherWidgetProps) {
   return (
     <div
       className="rounded-lg border border-zinc-700 bg-zinc-900 p-6 mb-6"
-      {...storyblokEditable(block)}
+      {...editable}
     >
       <h3 className="text-lg font-semibold text-zinc-100">{block.title}</h3>
       <p className="text-sm text-zinc-500 mt-1">Location: {block.location}</p>

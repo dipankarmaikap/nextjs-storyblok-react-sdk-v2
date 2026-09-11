@@ -1,8 +1,7 @@
-import { StoryblokPreviewRsc } from "@storyblok/react/client";
+import { StoryblokPreview } from "@storyblok/react/rsc";
 import { renderContent } from "../lib/actions";
 import { client, isPreview } from "../lib/storyblok";
 import { PreviewBanner } from "../components/PreviewBanner";
-import { StoryContent } from "../components/StoryContent";
 
 type Params = Promise<{ slug?: string[] }>;
 
@@ -27,18 +26,10 @@ async function PageContent({
     return <main>Story not found</main>;
   }
 
-  const content = <StoryContent story={story} />;
-
-  if (!isPreview) {
-    return content;
-  }
-
   return (
     <>
       <PreviewBanner />
-      <StoryblokPreviewRsc renderContent={renderContent}>
-        {content}
-      </StoryblokPreviewRsc>
+      <StoryblokPreview story={story} renderContent={renderContent} />
     </>
   );
 }
