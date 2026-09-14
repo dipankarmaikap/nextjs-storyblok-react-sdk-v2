@@ -1,5 +1,6 @@
 import type { Story } from "@storyblok/react";
 import { StoryblokComponent } from "../lib/storyblok";
+import type { BlockContent } from "@storyblok/react";
 
 type StoryContentProps = { story: Story };
 
@@ -16,7 +17,7 @@ type StoryContentProps = { story: Story };
 export function StoryContent({ story }: StoryContentProps) {
   return (
     <main>
-      <StoryblokComponent block={story.content} />
+      <StoryblokComponent block={story.content as BlockContent} />
     </main>
   );
 }

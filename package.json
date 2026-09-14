@@ -12,7 +12,7 @@
   "dependencies": {
     "@storyblok/api-client": "^0.7.3",
     "@storyblok/live-preview": "^0.4.0",
-    "@storyblok/react": "https://pkg.pr.new/@storyblok/react@4090bf6",
+    "@storyblok/react": "https://pkg.pr.new/@storyblok/react@451c68e",
     "@storyblok/richtext": "^5.2.0",
     "@storyblok/schema": "^0.2.0",
     "lru-cache": "^11.5.2",
